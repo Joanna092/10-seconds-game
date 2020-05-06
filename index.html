@@ -10,9 +10,30 @@
    </head>
    <body>
 
+<div id=highest_score>
+<p>Highest score</p>
+<p id="highestNumber"></p>
+</div>
+
 <div class="container">
 
-<p><span id=randomNumber1></span> + <span id=randomNumber2></span> = ?</p>
+Choose game
+<button onclick="playPlus()" id="plus">plus</button>
+<button onclick="playMinus()" id="minus">minus</button>
+<button onclick="playMultiply()" id="multiply">multiply</button>
+<button onclick="playDivide ()" id="divide">divide</button>
+
+<br><br>
+
+Choose range
+<form name="registrationForm">
+    <input type="range" name="rangeInputName" id="rangeInputId" value="24" min="1" max="50" oninput="rangeOutputId.value = rangeInputId.value">
+    <output name="rangeOutputName" id="rangeOutputId">10</output>
+</form>
+
+<br><br>
+
+<p><span id=randomNumber1></span><span id="calculation_mark"></span> <span id=randomNumber2></span> = ?</p>
 
 <input type="number" id="myInput" />
 
@@ -27,7 +48,6 @@
 <br><br>
 
 <p id="alert"></p>
-
 
 </div>
 

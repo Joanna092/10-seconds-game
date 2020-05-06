@@ -1,3 +1,8 @@
 .container {
-  padding: 250px;
+  padding: 20px 200px;
+}
+
+#highest_score {
+  text-align: left;
+  padding: 50px;
 }
