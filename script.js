@@ -1,277 +1,105 @@
-var playPlus = function() {
+$(document).ready(function() {
 
-    $(document).ready(function() {
+    var allResults = [];
+    var result;
+    var timeLeft = 10;
+    var currentQuestion;
 
-        $('#calculation_mark').html(" +");
+    var getQuestionType = function() {
+        var selectedTypes = [];
 
-        var allResults = [0, 0];
-        var randomNumber1;
-        var randomNumber2;
-        var result;
-        var timeLeft = 10;
+        $('.checkboxes:checked').each(function(i, ele) {
+            selectedTypes.push($(ele).prop('id'))
+        })
 
-        var generateNumbers = function() {
-            randomNumber1 = Math.floor(Math.random() * rangeOutputId.value);
-            randomNumber2 = Math.floor(Math.random() * rangeOutputId.value);
-            result = randomNumber1 + randomNumber2;
-            $('#randomNumber1').html(randomNumber1);
-            $('#randomNumber2').html(randomNumber2);
+        if (selectedTypes.length === 0) {
+            return 'plus';
         }
 
-        generateNumbers();
+        return selectedTypes[Math.floor(Math.random() * selectedTypes.length)];
+    }
 
-        var points = 0;
+    var questionGenerator = function() {
 
-        var checkAnswer = function(userInput, answer) {
-            if (userInput === result) {
-                points += 1;
-                timeLeft += 1;
-                $('#points').html(points);
-                $('#myInput').val('');
-                generateNumbers();
+        var selectedRange = $('#rangeInputId').val();
 
+        var question = {};
+        var num1 = Math.floor(Math.random() * selectedRange);
+        var num2 = Math.floor(Math.random() * selectedRange);
+
+        var questionType = getQuestionType();
+
+        switch (questionType) {
+            case "plus":
+                result = num1 + num2;
+                question.equation = String(num1) + " + " + String(num2);
+                break;
+            case 'minus':
+                num1 = num2 + Math.floor(Math.random() * selectedRange);
+                result = num1 - num2;
+                question.equation = String(num1) + " - " + String(num2);
+                break;
+            case 'multiply':
+                result = num1 * num2;
+                question.equation = String(num1) + " * " + String(num2);
+                break;
+            case 'divide':
+                num2 = Math.floor(Math.random() * (selectedRange - 1)) + 1;
+                num1 = num2 * Math.floor(Math.random() * selectedRange);
+                result = num1 / num2;
+                question.equation = String(num1) + " / " + String(num2);
+                break;
+        }
+        return question;
+    };
+
+    var renderNewQuestion = function() {
+        currentQuestion = questionGenerator();
+        $('#equation').text(currentQuestion.equation);
+    };
+
+    renderNewQuestion();
+
+    var points = 0;
+
+    var checkAnswer = function(userInput, answer) {
+        if (userInput === result) {
+            points += 1;
+            timeLeft += 1;
+            $('#points').html(points);
+            $('#myInput').val('');
+            renderNewQuestion();
+            $('#alert').html(' '); //
+        }
+    }
+
+    $("#myInput").on('keyup', function() {
+        startGame();
+        var inputValue = Number($("#myInput").val());
+        checkAnswer(inputValue, result);
+    });
+
+    var interval;
+    var startGame = function() {
+        if (!interval) {
+
+            if (timeLeft === 0) {
+                timeLeft = 10;
+                points = points - points;
             }
-        }
 
-        $("#myInput").on('keyup', function() {
-            startGame();
-            var inputValue = Number($("#myInput").val());
-            checkAnswer(inputValue, result);
-        });
-
-        var interval;
-        var startGame = function() {
-            if (!interval) {
-
+            interval = setInterval(function() {
+                timeLeft--
+                $('#countdown').html(timeLeft);
                 if (timeLeft === 0) {
-                    timeLeft = 10;
-                    points = points - points;
+                    clearInterval(interval);
+                    interval = undefined;
+                    allResults.push(points);
+                    $('#highestNumber').html(Math.max.apply(null, allResults));
+                    $('#alert').html("Time's up! You got " + points + " points !");
                 }
-
-                interval = setInterval(function() {
-                    timeLeft--
-                    $('#countdown').html(timeLeft);
-                    if (timeLeft === 0) {
-                        clearInterval(interval);
-                        interval = undefined;
-                        allResults.push(points);
-                        $('#highestNumber').html(Math.max.apply(null, allResults));
-                        $('#alert').html("Time's up! You got " + points + " points !");
-                    }
-                }, 1000);
-            }
+            }, 1000);
         }
+    }
 
-    })
-
-}
-
-
-var playMinus = function() {
-
-    $(document).ready(function() {
-
-        $('#calculation_mark').html(" -");
-
-        var allResults = [0, 0];
-        var randomNumber1;
-        var randomNumber2;
-        var result;
-        var timeLeft = 10;
-
-        var generateNumbers = function() {
-
-            randomNumber1 = Math.floor(Math.random() * rangeOutputId.value)
-            randomNumber2 = randomNumber1 + Math.floor(Math.random() * rangeOutputId.value)
-
-            result = randomNumber2 - randomNumber1;
-            $('#randomNumber1').html(randomNumber2);
-            $('#randomNumber2').html(randomNumber1);
-        }
-
-        generateNumbers();
-
-        var points = 0;
-
-        var checkAnswer = function(userInput, answer) {
-            if (userInput === result) {
-                points += 1;
-                timeLeft += 1;
-                $('#points').html(points);
-                $('#myInput').val('');
-                generateNumbers();
-
-            }
-        }
-
-        $("#myInput").on('keyup', function() {
-            startGame();
-            var inputValue = Number($("#myInput").val());
-            checkAnswer(inputValue, result);
-        });
-
-        var interval;
-        var startGame = function() {
-            if (!interval) {
-
-                if (timeLeft === 0) {
-                    timeLeft = 10;
-                    points = points - points;
-                }
-
-                interval = setInterval(function() {
-                    timeLeft--
-                    $('#countdown').html(timeLeft);
-                    if (timeLeft === 0) {
-                        clearInterval(interval);
-                        interval = undefined;
-                        allResults.push(points);
-                        $('#highestNumber').html(Math.max.apply(null, allResults));
-                        $('#alert').html("Time's up! You got " + points + " points !");
-                    }
-                }, 1000);
-            }
-        }
-
-    })
-
-}
-
-
-var playMultiply = function() {
-
-    $(document).ready(function() {
-
-        $('#calculation_mark').html(" *");
-        var allResults = [0, 0];
-
-        var randomNumber1;
-        var randomNumber2;
-        var result;
-        var timeLeft = 10;
-
-        var generateNumbers = function() {
-            randomNumber1 = Math.floor(Math.random() * rangeOutputId.value);
-            randomNumber2 = Math.floor(Math.random() * rangeOutputId.value);
-            result = randomNumber1 * randomNumber2;
-            $('#randomNumber1').html(randomNumber1);
-            $('#randomNumber2').html(randomNumber2);
-        }
-
-        generateNumbers();
-
-        var points = 0;
-
-        var checkAnswer = function(userInput, answer) {
-            if (userInput === result) {
-                points += 1;
-                timeLeft += 1;
-                $('#points').html(points);
-                $('#myInput').val('');
-                generateNumbers();
-
-            }
-        }
-
-        $("#myInput").on('keyup', function() {
-            startGame();
-            var inputValue = Number($("#myInput").val());
-            checkAnswer(inputValue, result);
-        });
-
-        var interval;
-        var startGame = function() {
-            if (!interval) {
-
-                if (timeLeft === 0) {
-                    timeLeft = 10;
-                    points = points - points;
-                }
-
-                interval = setInterval(function() {
-                    timeLeft--
-                    $('#countdown').html(timeLeft);
-                    if (timeLeft === 0) {
-                        clearInterval(interval);
-                        interval = undefined;
-                        allResults.push(points);
-                        $('#highestNumber').html(Math.max.apply(null, allResults));
-                        $('#alert').html("Time's up! You got " + points + " points !");
-                    }
-                }, 1000);
-            }
-        }
-
-    })
-
-}
-
-var playDivide = function() {
-
-    $(document).ready(function() {
-
-        $('#calculation_mark').html(" /");
-        var allResults = [0, 0];
-
-        var randomNumber1;
-        var randomNumber2;
-        var result;
-        var timeLeft = 10;
-
-        var generateNumbers = function() {
-
-            randomNumber1 = Math.floor(Math.random() * (rangeOutputId.value - 1)) + 1;
-            randomNumber2 = randomNumber1 * Math.floor(Math.random() * rangeOutputId.value);
-
-            result = randomNumber2 / randomNumber1;
-            $('#randomNumber1').html(randomNumber2);
-            $('#randomNumber2').html(randomNumber1);
-        }
-
-        generateNumbers();
-
-        var points = 0;
-
-        var checkAnswer = function(userInput, answer) {
-            if (userInput === result) {
-                points += 1;
-                timeLeft += 1;
-                $('#points').html(points);
-                $('#myInput').val('');
-                generateNumbers();
-
-            }
-        }
-
-        $("#myInput").on('keyup', function() {
-            startGame();
-            var inputValue = Number($("#myInput").val());
-            checkAnswer(inputValue, result);
-        });
-
-        var interval;
-        var startGame = function() {
-            if (!interval) {
-
-                if (timeLeft === 0) {
-                    timeLeft = 10;
-                    points = points - points;
-                }
-
-                interval = setInterval(function() {
-                    timeLeft--
-                    $('#countdown').html(timeLeft);
-                    if (timeLeft === 0) {
-                        clearInterval(interval);
-                        interval = undefined;
-                        allResults.push(points);
-                        $('#highestNumber').html(Math.max.apply(null, allResults));
-                        $('#alert').html("Time's up! You got " + points + " points !");
-                    }
-                }, 1000);
-            }
-        }
-
-    })
-
-}
+})
