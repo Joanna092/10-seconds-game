@@ -1,55 +1,43 @@
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>10 Sec Maths Game</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <script src="script.js"></script>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>10 Sec Maths Game</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <link href="style.css" rel="stylesheet" type="text/css" />
+      <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+      <script src="script.js"></script>
    </head>
    <body>
-
-<div id=highest_score>
-<p>Highest score</p>
-<p id="highestNumber"></p>
-</div>
-
-<div class="container">
-
-Choose game
-<button onclick="playPlus()" id="plus">plus</button>
-<button onclick="playMinus()" id="minus">minus</button>
-<button onclick="playMultiply()" id="multiply">multiply</button>
-<button onclick="playDivide ()" id="divide">divide</button>
-
-<br><br>
-
-Choose range
-<form name="registrationForm">
-    <input type="range" name="rangeInputName" id="rangeInputId" value="24" min="1" max="50" oninput="rangeOutputId.value = rangeInputId.value">
-    <output name="rangeOutputName" id="rangeOutputId">10</output>
-</form>
-
-<br><br>
-
-<p><span id=randomNumber1></span><span id="calculation_mark"></span> <span id=randomNumber2></span> = ?</p>
-
-<input type="number" id="myInput" />
-
-<br><br>
-
-<p id="countdown"></p>
-
-<br><br>
-
-<p id="points"></p>
-
-<br><br>
-
-<p id="alert"></p>
-
-</div>
-
+      <div id=highest_score>
+         <p>Highest score: <span id="highestNumber"></span></p>
+      </div>
+      <div class="container">
+         <div id="border">
+            <div class="row">
+               <div class="col-5">
+                  <form>
+                     <p><input type="checkbox" class="checkboxes" id="plus" checked>Plus</p>
+                     <p><input type="checkbox" class="checkboxes" id="minus">Minus</p>
+                     <p><input type="checkbox" class="checkboxes" id="multiply">Multiply</p>
+                     <p><input type="checkbox" class="checkboxes" id="divide">Divide</p>
+                  </form>
+               </div>
+               <div class="col-7">
+                  <p>Choose range:</p>
+                  <form name="registrationForm">
+                     <input type="range" name="rangeInputName" id="rangeInputId" value="10" min="1" max="50" oninput="rangeOutputId.value = rangeInputId.value">
+                     <output name="rangeOutputName" id="rangeOutputId" style="margin-left: 5px">10</output>
+                  </form>
+                  <h1 id="equation"></h1>
+                  <input type="number" id="myInput" />
+                  <p>Time left:  <span id="countdown"></span></p>
+                  <p>Number of points: <span id="points"></span></p>
+                  <p id="alert"></p>
+               </div>
+            </div>
+         </div>
+      </div>
    </body>
 </html>
