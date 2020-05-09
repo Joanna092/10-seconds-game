@@ -24,8 +24,8 @@ $(document).ready(function() {
         var selectedRange = $('#rangeInputId').val();
 
         var question = {};
-        var num1 = Math.floor(Math.random() * selectedRange);
-        var num2 = Math.floor(Math.random() * selectedRange);
+        var num1 = Math.floor(Math.random() * (selectedRange - 1)) + 1;
+        var num2 = Math.floor(Math.random() * (selectedRange - 1)) + 1;
 
         var questionType = getQuestionType();
 
@@ -35,7 +35,7 @@ $(document).ready(function() {
                 question.equation = String(num1) + " + " + String(num2);
                 break;
             case 'minus':
-                num1 = num2 + Math.floor(Math.random() * selectedRange);
+                num1 = num2 + Math.floor(Math.random() * (selectedRange - 1)) + 1;
                 result = num1 - num2;
                 question.equation = String(num1) + " - " + String(num2);
                 break;
@@ -45,7 +45,7 @@ $(document).ready(function() {
                 break;
             case 'divide':
                 num2 = Math.floor(Math.random() * (selectedRange - 1)) + 1;
-                num1 = num2 * Math.floor(Math.random() * selectedRange);
+                num1 = num2 * (Math.floor(Math.random() * (selectedRange - 1)) + 1);
                 result = num1 / num2;
                 question.equation = String(num1) + " / " + String(num2);
                 break;
